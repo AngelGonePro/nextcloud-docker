@@ -186,3 +186,12 @@ docker compose exec -u www-data app php occ status
 docker compose exec -u www-data app php occ db:add-missing-indices
 docker compose exec -u www-data app php occ app:update --all
 ```
+
+<br>
+
+```
+docker compose exec -u www-data app php occ maintenance:repair --include-expensive
+```
+```
+docker compose exec -u www-data app php occ config:system:set serverid --value=0
+```
