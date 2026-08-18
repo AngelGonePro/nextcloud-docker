@@ -24,3 +24,13 @@ rm /tmp/nextcloud.zip
 cp .env.example .env
 nano .env      # set NC_TRUSTED_PROXIES to your proxy VM's IP, set NC_PORT
 ```
+```
+mkdir data
+```
+```
+docker compose up -d
+
+docker compose exec -u www-data app php occ files_external:create "Shared Media" local null::null -c datadir=/mnt/media
+docker compose exec -u www-data app php occ files_external:applicable 1 --add-group="everyone"
+docker compose exec -u www-data app php occ files_external:option 1 filesystem_check_changes 1
+```
