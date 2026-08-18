@@ -148,6 +148,13 @@ docker compose exec -u www-data app php occ config:system:set maintenance_window
 docker compose exec -u www-data app php occ config:system:set default_phone_region --value="US"
 ```
 403 means not exposed: `curl -o /dev/null -s -w "%{http_code}\n" http://10.0.0.50:8080/data/.ocdata`
+```
+cd ~/nextcloud
+sed -i "/- .\/html:\/var\/www\/html:ro/a\\      - ./custom_apps:/var/www/html/custom_apps:ro" docker-compose.yml
+docker compose up -d --force-recreate web
+docker compose exec -T web ls /var/www/html/custom_apps/music/dist | head -3
+curl -o /dev/null -s -w "%{http_code}\n" "http://10.0.0.50:8080/apps/music/dist/webpack.app.5efa1e4abc1de310befe.js"
+```
 
 <br>
 
