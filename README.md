@@ -158,6 +158,9 @@ docker compose up -d --force-recreate web
 docker compose exec -T web ls /var/www/html/custom_apps/music/dist | head -3
 curl -o /dev/null -s -w "%{http_code}\n" "http://10.0.0.50:8080/apps/music/dist/webpack.app.5efa1e4abc1de310befe.js"
 ```
+```
+docker compose exec -u www-data app php occ files_external:option 1 enable_sharing true
+```
 
 <br>
 
