@@ -1,7 +1,7 @@
 https://raw.githubusercontent.com/AngelGonePro/nextcloud-docker/refs/heads/main/nextcloud.zip
 ```
 mkdir ~/nextcloud && \
-wget -O /tmp/pterodactyl-panel.zip https://raw.githubusercontent.com/AngelGonePro/nextcloud-docker/refs/heads/main/nextcloud.zip && \
+wget -O /tmp/nextcloud.zip https://raw.githubusercontent.com/AngelGonePro/nextcloud-docker/refs/heads/main/nextcloud.zip && \
 python3 - << 'EOF'
 import zipfile, os
 
