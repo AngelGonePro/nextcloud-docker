@@ -1,5 +1,5 @@
 https://raw.githubusercontent.com/AngelGonePro/nextcloud-docker/refs/heads/main/nextcloud.zip
-
+```
 mkdir ~/nextcloud && \
 wget -O /tmp/pterodactyl-panel.zip https://raw.githubusercontent.com/AngelGonePro/nextcloud-docker/refs/heads/main/nextcloud.zip && \
 python3 - << 'EOF'
@@ -19,3 +19,4 @@ with zipfile.ZipFile(zip_path) as z:
                     f.write(z.read(member))
 EOF
 rm /tmp/nextcloud.zip
+```
