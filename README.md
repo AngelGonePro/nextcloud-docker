@@ -77,6 +77,8 @@ server {
     location = /robots.txt { access_log off; log_not_found off; }
     location = /.well-known/carddav { return 301 $scheme://$host/remote.php/dav; }
     location = /.well-known/caldav  { return 301 $scheme://$host/remote.php/dav; }
+    location = /.well-known/webfinger { return 301 $scheme://$host/index.php/.well-known/webfinger; }
+    location = /.well-known/nodeinfo  { return 301 $scheme://$host/index.php/.well-known/nodeinfo; }
 
     location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ { deny all; }
     location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console) { deny all; }
@@ -107,6 +109,14 @@ server {
         fastcgi_read_timeout 3600;
     }
 
+    location ~ \.mjs$ {
+        types { text/javascript mjs; }
+        default_type text/javascript;
+        try_files $uri /index.php$request_uri;
+        expires 6M;
+        access_log off;
+    }
+
     location ~ \.(?:css|js|svg|gif|png|jpg|ico|woff2?)$ {
         try_files $uri /index.php$request_uri;
         expires 6M;
@@ -114,6 +124,13 @@ server {
     }
 }
 EOF
+
+grep -c "mjs\|webfinger" ~/nextcloud/nginx/nextcloud.conf
+docker compose exec web nginx -t
+docker compose exec web nginx -s reload
+docker compose exec web cat /etc/nginx/conf.d/default.conf | grep -c "mjs\|webfinger"
+curl -I http://10.0.0.50:8080/index.php/apps/theming/theme/light.mjs 2>&1 | grep -i content-type
+curl -o /dev/null -s -w "%{http_code}\n" http://10.0.0.50:8080/.well-known/webfinger
 ```
 ```
 grep -c "nc_https" ~/nextcloud/nginx/nextcloud.conf
