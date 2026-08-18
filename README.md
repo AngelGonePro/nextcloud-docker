@@ -148,3 +148,41 @@ docker compose exec -u www-data app php occ config:system:set maintenance_window
 docker compose exec -u www-data app php occ config:system:set default_phone_region --value="US"
 ```
 403 means not exposed: `curl -o /dev/null -s -w "%{http_code}\n" http://10.0.0.50:8080/data/.ocdata`
+
+<br>
+
+UPDATING:
+```
+cd ~/nextcloud
+docker compose exec -T -u www-data app php occ maintenance:mode --on
+```
+```
+docker compose exec -T db pg_dump -U nextcloud nextcloud > ~/nextcloud-backup-$(date +%Y%m%d).sql
+```
+```
+tar -czf ~/nextcloud-backup-$(date +%Y%m%d).tar.gz -C ~/nextcloud config nc-data custom_apps themes
+```
+```
+docker compose exec -T -u www-data app php occ maintenance:mode --off
+```
+```
+ls -lh ~/nextcloud-backup-*
+```
+
+<br>
+
+```
+sed -i 's/nextcloud:(OLD VERSION)-fpm-alpine/nextcloud:(NEW VERSION)-fpm-alpine/g' docker-compose.yml
+docker compose pull app cron
+docker compose up -d app cron
+```
+```
+docker compose logs -f app
+```
+```
+docker compose exec -u www-data app php occ status
+```
+```
+docker compose exec -u www-data app php occ db:add-missing-indices
+docker compose exec -u www-data app php occ app:update --all
+```
