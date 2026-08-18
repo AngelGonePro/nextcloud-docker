@@ -37,3 +37,8 @@ docker compose exec -u www-data app php occ app:enable files_external
 docker compose exec -u www-data app php occ files_external:create "Shared Media" local null::null -c datadir=/mnt/media
 docker compose exec -u www-data app php occ files_external:option 1 filesystem_check_changes 1
 ```
+```
+cd ~/nextcloud
+docker compose up -d web
+docker compose exec -u www-data app php occ config:system:delete overwriteprotocol
+```
