@@ -121,3 +121,9 @@ docker compose exec web nginx -t
 docker compose exec web nginx -s reload
 docker compose exec web cat /etc/nginx/conf.d/default.conf | grep -c "nc_https"
 ```
+```
+docker compose exec -u www-data app php occ db:add-missing-indices
+docker compose exec -u www-data app php occ config:system:set maintenance_window_start --type=integer --value=1
+docker compose exec -u www-data app php occ config:system:set default_phone_region --value="US"
+```
+403 means not exposed: `curl -o /dev/null -s -w "%{http_code}\n" http://10.0.0.50:8080/data/.ocdata`
